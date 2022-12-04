@@ -1,19 +1,14 @@
 import React from 'react'
 import { Panel, RowPanel, RowPanelTitle } from './PanellStyled'
+import { webFunctions } from '../../data'
 
 const Panell = ({ totalWebFunctions, setTotalWebFunctions }) => {
-  const [formData, setFormData] = React.useState([
-    {
-      id: 'pages',
-      name: 'Número de páginas',
-      number: 0
-    },
-    {
-      id: 'languages',
-      name: 'Número de idiomas',
-      number: 0
+  const [formData, setFormData] = React.useState(() => {
+    if (localStorage.getItem('webFunctions') === null) {
+      return webFunctions
     }
-  ])
+    return JSON.parse(localStorage.getItem('webFunctions'))
+  })
 
   function symbolButton(name, symbol) {
     setFormData(prevFormData => {
@@ -30,6 +25,7 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions }) => {
           newFormData.push(option)
         }
       }
+      localStorage.setItem('webFunctions', JSON.stringify(newFormData))
       return newFormData
     })
   }
@@ -49,6 +45,7 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions }) => {
           newFormData.push(option)
         }
       }
+      localStorage.setItem('webFunctions', JSON.stringify(newFormData))
       return newFormData
     })
   }

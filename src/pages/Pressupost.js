@@ -1,30 +1,17 @@
 import React from 'react'
-import Panell from "../components/Panell/Panell";
+import Panell from '../components/Panell/Panell'
+import { products } from '../data'
 
 const Pressupost = () => {
   const title = '¿Qué quieres hacer?'
   const [total, setTotal] = React.useState(0)
   const [totalWebFunctions, setTotalWebFunctions] = React.useState(0)
-  const [formData, setFormData] = React.useState([
-    {
-      id: 'web',
-      name: 'Pàgina web',
-      price: 500,
-      selected: false
-    },
-    {
-      id: 'seo',
-      name: 'Consultoria SEO',
-      price: 300,
-      selected: false
-    },
-    {
-      id: 'ads',
-      name: 'Campanya de Google Ads',
-      price: 200,
-      selected: false
+  const [formData, setFormData] = React.useState(() => {
+    if (localStorage.getItem('products') === null) {
+      return products
     }
-  ])
+    return JSON.parse(localStorage.getItem('products'))
+  })
 
   function handleChange(event){
     const { name } = event.target
@@ -44,6 +31,7 @@ const Pressupost = () => {
           newFormData.push(option)
         }
       }
+      localStorage.setItem('products', JSON.stringify(newFormData))
       return newFormData
     })
   }
@@ -76,7 +64,7 @@ const Pressupost = () => {
             type='checkbox'
             id={ item.id }
             name={ item.id }
-            value={ item.selected }
+            checked={ item.selected }
             onChange={ handleChange }
           />
           <label htmlFor={ item.id }>
@@ -90,7 +78,7 @@ const Pressupost = () => {
           }
         </div>
       ) }
-      <p>Total: { total }</p>
+      <p>Total: { total }€</p>
     </>
   )
 }

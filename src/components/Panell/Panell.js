@@ -1,6 +1,7 @@
 import React from 'react'
 import { Panel, RowPanel, RowPanelTitle } from './PanellStyled'
 import { webFunctions } from '../../data'
+import Modal from "../Modal/Modal";
 
 const Panell = ({ totalWebFunctions, setTotalWebFunctions }) => {
   const [formData, setFormData] = React.useState(() => {
@@ -9,6 +10,7 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions }) => {
     }
     return JSON.parse(localStorage.getItem('webFunctions'))
   })
+  const [infoModal, setInfoModal] = React.useState(false)
 
   function symbolButton(name, symbol) {
     setFormData(prevFormData => {
@@ -86,6 +88,12 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions }) => {
             >
               +
             </button>
+            <button onClick={(e) => setInfoModal(true)}>Info</button>
+            <Modal
+              show={ infoModal }
+              setShow={ setInfoModal }
+              text={ item.name }
+            />
           </div>
         </RowPanel>
       )}

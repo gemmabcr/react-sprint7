@@ -1,8 +1,10 @@
 import React from 'react'
+import Panell from './components/Panell/Panell'
 
 const App = () => {
   const title = '¿Qué quieres hacer?'
   const [total, setTotal] = React.useState(0)
+  const [totalWebFunctions, setTotalWebFunctions] = React.useState(0)
   const [formData, setFormData] = React.useState([
     {
       id: 'web',
@@ -34,37 +36,58 @@ const App = () => {
             ...option,
             selected: !option.selected
           }
+          if (updatedOption.name === 'web' && !updatedOption.selected) {
+            setTotalWebFunctions(0)
+          }
           newFormData.push(updatedOption)
         } else {
           newFormData.push(option)
         }
       }
-      countTotal(newFormData)
       return newFormData
     })
   }
 
-  function countTotal(formData){
+  React.useEffect(() => {
     const selectedItems = formData.filter(item => item.selected)
-    setTotal(prevTotal => {
-      let total = 0
-      if (selectedItems.length > 0) {
+    if (selectedItems.length > 0) {
+      const webOption = selectedItems.find(item => item.id === 'web')
+      setTotal(prevTotal => {
+        let total = 0
         for (let option of selectedItems) {
           total += option.price
         }
-      }
-      return total
-    })
-
-  }
+        if (webOption !== undefined) {
+          total += totalWebFunctions
+        }
+        return total
+      })
+    } else {
+      setTotal(0)
+    }
+  }, [formData, totalWebFunctions])
 
   return (
     <>
       <p>{ title }</p>
       { formData.map(item =>
         <div key={ item.id }>
-          <input type='checkbox' id={ item.id } name={ item.id } value={ item.id } onChange={ handleChange } />
-          <label htmlFor={ item.id }>{ item.name } ({ item.price }€)</label>
+          <input
+            type='checkbox'
+            id={ item.id }
+            name={ item.id }
+            value={ item.selected }
+            onChange={ handleChange }
+          />
+          <label htmlFor={ item.id }>
+            { item.name } ({ item.price }€)
+          </label>
+          { item.id === 'web' && item.selected &&
+            <Panell
+              totalWebFunctions={ totalWebFunctions }
+              setTotalWebFunctions={ setTotalWebFunctions }
+            />
+          }
         </div>
       ) }
       <p>Total: { total }</p>

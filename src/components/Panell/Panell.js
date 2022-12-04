@@ -1,5 +1,5 @@
 import React from 'react'
-import { Panel } from './PanellStyled'
+import { Panel, RowPanel, RowPanelTitle } from './PanellStyled'
 
 const Panell = ({ totalWebFunctions, setTotalWebFunctions }) => {
   const [formData, setFormData] = React.useState([
@@ -15,7 +15,7 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions }) => {
     }
   ])
 
-  function symbolButton (name, symbol) {
+  function symbolButton(name, symbol) {
     setFormData(prevFormData => {
       const newFormData = []
       for (let option of prevFormData) {
@@ -34,8 +34,8 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions }) => {
     })
   }
 
-  function handleChange (event) {
-    const { name, value } = event.target
+  function handleChange(event) {
+    const {name, value} = event.target
     setFormData(prevFormData => {
       const newFormData = []
       for (let option of prevFormData) {
@@ -62,33 +62,37 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions }) => {
 
   return (
     <Panel>
-      { formData.map(item =>
-        <div key={ item.id }>
-          <button
-            disabled={ item.number === 0 }
-            onClick={ () => symbolButton(item.id, '-') }
-          >
-            -
-          </button>
-          <input
-            type='number'
-            id={ item.id }
-            name={ item.id }
-            min={0}
-            value={ item.number }
-            onChange={ handleChange }
-          />
-          <label htmlFor={ item.id }>
-            { item.name } (*30€)
-          </label>
-          <button
-            onClick={ () => symbolButton(item.id, '+') }
-          >
-            +
-          </button>
-        </div>
-      ) }
-      <p>Total funcionalidades: { totalWebFunctions }€</p>
+      {formData.map(item =>
+        <RowPanel key={item.id}>
+          <RowPanelTitle>
+            <label htmlFor={item.id}>
+              {item.name} (*30€)
+            </label>
+          </RowPanelTitle>
+          <div>
+            <button
+              disabled={item.number === 0}
+              onClick={() => symbolButton(item.id, '-')}
+            >
+              -
+            </button>
+            <input
+              type='number'
+              id={item.id}
+              name={item.id}
+              min={0}
+              value={item.number}
+              onChange={handleChange}
+            />
+            <button
+              onClick={() => symbolButton(item.id, '+')}
+            >
+              +
+            </button>
+          </div>
+        </RowPanel>
+      )}
+      <p>Total funcionalidades: {totalWebFunctions}€</p>
     </Panel>
   )
 }

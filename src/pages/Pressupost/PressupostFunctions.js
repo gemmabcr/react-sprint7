@@ -11,36 +11,31 @@ export function saveToLocal(name, value) {
   localStorage.setItem(name, JSON.stringify(value))
 }
 
-export function getFormData () {
-  const key = 'products'
+export function gettingData (key, data) {
   if (getFromLocal(key) === null) {
-    return products
+    return data
   }
   return getFromLocal(key, true)
+}
+
+export function getFormData () {
+  const key = 'products'
+  return gettingData(key, products)
 }
 
 export function getWebFormData () {
   const key = 'webFunctions'
-  if (getFromLocal(key) === null) {
-    return webFunctions
-  }
-  return getFromLocal(key, true)
+  return gettingData(key, webFunctions)
 }
 
 export function getTitleFormData () {
   const key = 'titleFormData'
-  if (getFromLocal(key) === null) {
-    return titlePresu
-  }
-  return getFromLocal(key, true)
+  return gettingData(key, titlePresu)
 }
 
 export function getListData () {
   const key = 'listPressupost'
-  if (getFromLocal(key) === null) {
-    return []
-  }
-  return getFromLocal(key, true)
+  return gettingData(key, [])
 }
 
 export function getNewTitleData (prevState, name, value) {

@@ -1,16 +1,15 @@
 import React from 'react'
 import { Panel, RowPanel, RowPanelTitle } from './PanellStyled'
 import { webFunctions } from '../../data'
-import Modal from "../Modal/Modal";
+import { FlexRow } from '../../pages/Pressupost/PressupostStyled'
 
-const Panell = ({ totalWebFunctions, setTotalWebFunctions }) => {
+const Panell = ({ totalWebFunctions, setTotalWebFunctions, setTitleModal, setInfoModal }) => {
   const [formData, setFormData] = React.useState(() => {
     if (localStorage.getItem('webFunctions') === null) {
       return webFunctions
     }
     return JSON.parse(localStorage.getItem('webFunctions'))
   })
-  const [infoModal, setInfoModal] = React.useState(false)
 
   function symbolButton(name, symbol) {
     setFormData(prevFormData => {
@@ -52,6 +51,11 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions }) => {
     })
   }
 
+  function openModal (name) {
+    setTitleModal(name)
+    setInfoModal(true)
+  }
+
   React.useEffect(() => {
     const selectedInputs = formData.filter(item => item.number > 0)
     const numbersArray = selectedInputs.map(number => number.number)
@@ -68,7 +72,7 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions }) => {
               {item.name} (*30€)
             </label>
           </RowPanelTitle>
-          <div>
+          <FlexRow>
             <button
               disabled={item.number === 0}
               onClick={() => symbolButton(item.id, '-')}
@@ -88,13 +92,12 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions }) => {
             >
               +
             </button>
-            <button onClick={(e) => setInfoModal(true)}>Info</button>
-            <Modal
-              show={ infoModal }
-              setShow={ setInfoModal }
-              text={ item.name }
-            />
-          </div>
+            <button
+              onClick={(e) => openModal(item.name)}
+            >
+              Info
+            </button>
+          </FlexRow>
         </RowPanel>
       )}
       <p>Total funcionalidades: {totalWebFunctions}€</p>

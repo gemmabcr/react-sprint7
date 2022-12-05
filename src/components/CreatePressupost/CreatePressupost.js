@@ -1,8 +1,9 @@
 import React from 'react'
 import Panell from '../Panell/Panell'
 import { getFormData, getTitleFormData } from '../../pages/Pressupost/PressupostFunctions'
+import { FlexColumn, FlexRow } from '../../pages/Pressupost/PressupostStyled'
 
-const CreatePressupost = ({ title }) => {
+const CreatePressupost = ({ title, setTitleModal, setInfoModal }) => {
   const [total, setTotal] = React.useState(0)
   const [totalWebFunctions, setTotalWebFunctions] = React.useState(0)
   const [formData, setFormData] = React.useState(() => getFormData())
@@ -71,10 +72,10 @@ const CreatePressupost = ({ title }) => {
   }
 
   return (
-    <div>
+    <FlexColumn>
       <h4>{ title }</h4>
       { titleFormData.map(item =>
-        <div key={ item.id }>
+        <FlexRow key={ item.id }>
           <input
             type='text'
             id={ item.id }
@@ -85,30 +86,34 @@ const CreatePressupost = ({ title }) => {
           <label htmlFor={ item.id }>
             { item.name }
           </label>
-        </div>
+        </FlexRow>
       )}
       { formData.map(item =>
         <div key={ item.id }>
-          <input
-            type='checkbox'
-            id={ item.id }
-            name={ item.id }
-            checked={ item.selected }
-            onChange={ handleChange }
-          />
-          <label htmlFor={ item.id }>
-            { item.name } ({ item.price }€)
-          </label>
+          <FlexRow>
+            <input
+              type='checkbox'
+              id={ item.id }
+              name={ item.id }
+              checked={ item.selected }
+              onChange={ handleChange }
+            />
+            <label htmlFor={ item.id }>
+              { item.name } ({ item.price }€)
+            </label>
+          </FlexRow>
           { item.id === 'web' && item.selected &&
             <Panell
               totalWebFunctions={ totalWebFunctions }
               setTotalWebFunctions={ setTotalWebFunctions }
+              setTitleModal={ setTitleModal }
+              setInfoModal={ setInfoModal }
             />
           }
         </div>
       ) }
       <p>Total: { total }€</p>
-    </div>
+    </FlexColumn>
   )
 }
 

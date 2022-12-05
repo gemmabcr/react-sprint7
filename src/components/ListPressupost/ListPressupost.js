@@ -1,5 +1,6 @@
 import React from 'react'
 import { ItemList } from './ListPressupostStyled'
+import { FlexColumn } from '../../pages/Pressupost/PressupostStyled'
 
 const ListPressupost = ({ title }) => {
   const [listPressupost, setListPressupost] = React.useState([
@@ -13,7 +14,7 @@ const ListPressupost = ({ title }) => {
   ])
 
   return (
-    <div>
+    <FlexColumn>
       <h4>{ title }</h4>
       { listPressupost.length > 0 && listPressupost.map(item =>
         <ItemList>
@@ -23,7 +24,7 @@ const ListPressupost = ({ title }) => {
           <p>{ item.date }</p>
         </ItemList>
       )}
-    </div>
+    </FlexColumn>
   )
 }
 

@@ -1,17 +1,12 @@
 import React from 'react'
-import Panell from '../components/Panell/Panell'
-import { products } from '../data'
+import Panell from '../Panell/Panell'
+import { getFormData, getTitleFormData } from '../../pages/Pressupost/PressupostFunctions'
 
-const Pressupost = () => {
-  const title = '¿Qué quieres hacer?'
+const CreatePressupost = ({ title }) => {
   const [total, setTotal] = React.useState(0)
   const [totalWebFunctions, setTotalWebFunctions] = React.useState(0)
-  const [formData, setFormData] = React.useState(() => {
-    if (localStorage.getItem('products') === null) {
-      return products
-    }
-    return JSON.parse(localStorage.getItem('products'))
-  })
+  const [formData, setFormData] = React.useState(() => getFormData())
+  const [titleFormData, setTitleFormData] = React.useState(() => getTitleFormData())
 
   function handleChange(event){
     const { name } = event.target
@@ -55,9 +50,43 @@ const Pressupost = () => {
     }
   }, [formData, totalWebFunctions])
 
+  function handleTitleChange(event){
+    const { name, value } = event.target
+    setTitleFormData(prevTitleFormData => {
+      const newFormData = []
+      for (let option of prevTitleFormData){
+        if (option.id === name) {
+          const updatedOption = {
+            ...option,
+            value: value
+          }
+          newFormData.push(updatedOption)
+        } else {
+          newFormData.push(option)
+        }
+      }
+      localStorage.setItem('titleFormData', JSON.stringify(newFormData))
+      return newFormData
+    })
+  }
+
   return (
-    <>
-      <p>{ title }</p>
+    <div>
+      <h4>{ title }</h4>
+      { titleFormData.map(item =>
+        <div key={ item.id }>
+          <input
+            type='text'
+            id={ item.id }
+            name={ item.id }
+            value={ item.value }
+            onChange={ handleTitleChange }
+          />
+          <label htmlFor={ item.id }>
+            { item.name }
+          </label>
+        </div>
+      )}
       { formData.map(item =>
         <div key={ item.id }>
           <input
@@ -79,8 +108,8 @@ const Pressupost = () => {
         </div>
       ) }
       <p>Total: { total }€</p>
-    </>
+    </div>
   )
 }
 
-export default Pressupost
+export default CreatePressupost

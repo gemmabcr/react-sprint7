@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Home from '../pages/Home'
-import Pressupost from '../pages/Pressupost'
+import Pressupost from '../pages/Pressupost/Pressupost'
 
 const Router = () => {
   return (

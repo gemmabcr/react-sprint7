@@ -31,3 +31,16 @@ export const webFunctions = [
     number: 0
   }
 ]
+
+export const titlePresu = [
+  {
+    id: 'title',
+    name: 'Nombre de presupuesto',
+    value: ''
+  },
+  {
+    id: 'client',
+    name: 'Nombre de cliente',
+    value: ''
+  }
+]

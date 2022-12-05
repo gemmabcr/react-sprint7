@@ -65,17 +65,23 @@ export function getFormToSubmit (listPressupost, titleFormData, formData, total,
 }
 
 export function format (inputDate) {
-  let date = inputDate.getDate();
-  let month = inputDate.getMonth() + 1;
-  let year = inputDate.getFullYear();
+  let date = inputDate.getDate()
+  let month = inputDate.getMonth() + 1
+  let year = inputDate.getFullYear()
 
   date = date
     .toString()
-    .padStart(2, '0');
+    .padStart(2, '0')
 
   month = month
     .toString()
-    .padStart(2, '0');
+    .padStart(2, '0')
 
-  return `${date}/${month}/${year}`;
+  return `${date}/${month}/${year}`
+}
+
+export function formatWebFunction (name) {
+  const splitedName = name.split(' ')
+  const word = splitedName[2]
+  return word.charAt(0).toUpperCase() + word.slice(1)
 }

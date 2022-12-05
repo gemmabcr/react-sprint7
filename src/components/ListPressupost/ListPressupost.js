@@ -1,6 +1,7 @@
 import React from 'react'
 import { ItemList } from './ListPressupostStyled'
 import { ListContainer } from '../../pages/Pressupost/PressupostStyled'
+import { formatWebFunction } from '../../pages/Pressupost/PressupostFunctions'
 
 const ListPressupost = ({ title, listPressupost }) => {
   return (
@@ -11,8 +12,10 @@ const ListPressupost = ({ title, listPressupost }) => {
       }
       { listPressupost.length > 0 && listPressupost.map(item =>
         <ItemList key={ item.id }>
-          <p>{ item.date }</p>
-          <p>{ item.title }, de { item.client }</p>
+          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+            <p>{ item.title }, de { item.client }</p>
+            <small>{ item.date }</small>
+          </div>
           { item.products.length > 0 &&
             <div>
               <p>Productos</p>
@@ -20,15 +23,23 @@ const ListPressupost = ({ title, listPressupost }) => {
                 { item.products.map(product =>
                   <div key={product.name}>
                     <li>{ product.name }: { product.price }€</li>
-                    { product.id === 'web' && item.webFunctions.length > 0 && item.webFunctions.map(webFunction =>
-                      <ul key={webFunction.id}>
-                        <li>{ webFunction.name }: { webFunction.number } = { webFunction.number*30}€</li>
+                    { product.id === 'web' && item.webFunctions.length > 0 &&
+                      <ul>
+                        { item.webFunctions.map(webFunction => {
+                          if (webFunction.number > 0) {
+                            return (
+                              <li key={ webFunction.id }>
+                                { webFunction.number } { formatWebFunction(webFunction.name) }: = { webFunction.number*30}€
+                              </li>
+                            )
+                          }
+                          return ''
+                        }) }
                       </ul>
-                    ) }
+                    }
                   </div>
                 ) }
               </ul>
-
             </div>
           }
           <p>Precio total: { item.totalPrice }€</p>

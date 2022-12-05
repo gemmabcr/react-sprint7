@@ -2,24 +2,19 @@ import React from 'react'
 import { ItemList } from './ListPressupostStyled'
 import { FlexColumn } from '../../pages/Pressupost/PressupostStyled'
 
-const ListPressupost = ({ title }) => {
-  const [listPressupost, setListPressupost] = React.useState([
-    {
-      title: 'Presu1',
-      client: 'Kimchilover',
-      products: [],
-      totalPrice: 500,
-      date: 'Mon Dec 05 2022 14:33:56 GMT+0100'
-    }
-  ])
-
+const ListPressupost = ({ title, listPressupost }) => {
   return (
     <FlexColumn>
       <h4>{ title }</h4>
       { listPressupost.length > 0 && listPressupost.map(item =>
-        <ItemList>
+        <ItemList key={ item.id }>
           <p>{ item.title }, de { item.client }</p>
-          <p>{ JSON.stringify(item.products) }</p>
+          { item.products.length > 0 &&
+            <p>{ JSON.stringify(item.products) }</p>
+          }
+          { item.webFunctions.length > 0 &&
+            <p>{ JSON.stringify(item.webFunctions) }</p>
+          }
           <p>Precio total: { item.totalPrice }</p>
           <p>{ item.date }</p>
         </ItemList>

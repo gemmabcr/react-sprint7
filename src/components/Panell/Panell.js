@@ -3,16 +3,10 @@ import { Panel, RowPanel, RowPanelTitle } from './PanellStyled'
 import { webFunctions } from '../../data'
 import { FlexRow } from '../../pages/Pressupost/PressupostStyled'
 
-const Panell = ({ totalWebFunctions, setTotalWebFunctions, setTitleModal, setInfoModal }) => {
-  const [formData, setFormData] = React.useState(() => {
-    if (localStorage.getItem('webFunctions') === null) {
-      return webFunctions
-    }
-    return JSON.parse(localStorage.getItem('webFunctions'))
-  })
+const Panell = ({ totalWebFunctions, setTotalWebFunctions, setTitleModal, setInfoModal, webFormData, setWebFormData }) => {
 
   function symbolButton(name, symbol) {
-    setFormData(prevFormData => {
+    setWebFormData(prevFormData => {
       const newFormData = []
       for (let option of prevFormData) {
         if (option.id === name) {
@@ -33,7 +27,7 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions, setTitleModal, setInf
 
   function handleChange(event) {
     const {name, value} = event.target
-    setFormData(prevFormData => {
+    setWebFormData(prevFormData => {
       const newFormData = []
       for (let option of prevFormData) {
         if (option.id === name) {
@@ -57,15 +51,15 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions, setTitleModal, setInf
   }
 
   React.useEffect(() => {
-    const selectedInputs = formData.filter(item => item.number > 0)
+    const selectedInputs = webFormData.filter(item => item.number > 0)
     const numbersArray = selectedInputs.map(number => number.number)
     const total = numbersArray.reduce((partialSum, a) => partialSum + a, 0)
     setTotalWebFunctions(total * 30)
-  }, [formData, setTotalWebFunctions])
+  }, [webFormData, setTotalWebFunctions])
 
   return (
     <Panel>
-      {formData.map(item =>
+      {webFormData.map(item =>
         <RowPanel key={item.id}>
           <RowPanelTitle>
             <label htmlFor={item.id}>

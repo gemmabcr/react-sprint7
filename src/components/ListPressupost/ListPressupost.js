@@ -1,7 +1,7 @@
 import React from 'react'
-import { ItemList } from './ListPressupostStyled'
+import {ItemList, ItemListHeader} from './ListPressupostStyled'
 import { ListContainer } from '../../pages/Pressupost/PressupostStyled'
-import { formatWebFunction } from '../../pages/Pressupost/PressupostFunctions'
+import { checkWebFunctions, getWebFunctionData } from './ListPressupostFunctions'
 
 const ListPressupost = ({ title, listPressupost }) => {
   return (
@@ -12,10 +12,10 @@ const ListPressupost = ({ title, listPressupost }) => {
       }
       { listPressupost.length > 0 && listPressupost.map(item =>
         <ItemList key={ item.id }>
-          <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+          <ItemListHeader>
             <p>{ item.title }, de { item.client }</p>
             <small>{ item.date }</small>
-          </div>
+          </ItemListHeader>
           { item.products.length > 0 &&
             <div>
               <p>Productos</p>
@@ -23,18 +23,11 @@ const ListPressupost = ({ title, listPressupost }) => {
                 { item.products.map(product =>
                   <div key={product.name}>
                     <li>{ product.name }: { product.price }€</li>
-                    { product.id === 'web' && item.webFunctions.length > 0 &&
+                    { checkWebFunctions(product, item) &&
                       <ul>
-                        { item.webFunctions.map(webFunction => {
-                          if (webFunction.number > 0) {
-                            return (
-                              <li key={ webFunction.id }>
-                                { webFunction.number } { formatWebFunction(webFunction.name) }: = { webFunction.number*30}€
-                              </li>
-                            )
-                          }
-                          return ''
-                        }) }
+                        { item.webFunctions.map(webFunction =>
+                          getWebFunctionData(webFunction)
+                        ) }
                       </ul>
                     }
                   </div>

@@ -79,9 +79,3 @@ export function format (inputDate) {
 
   return `${date}/${month}/${year}`
 }
-
-export function formatWebFunction (name) {
-  const splitedName = name.split(' ')
-  const word = splitedName[2]
-  return word.charAt(0).toUpperCase() + word.slice(1)
-}

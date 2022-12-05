@@ -7,3 +7,8 @@ export const ItemList = styled.div`
   gap: 1rem;
   padding: 1rem;
 `
+export const ItemListHeader = styled.div`
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between
+`

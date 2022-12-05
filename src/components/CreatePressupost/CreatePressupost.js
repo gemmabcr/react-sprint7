@@ -1,11 +1,15 @@
 import React from 'react'
 import Panell from '../Panell/Panell'
 import {
+  calculateTotal,
+  findWebOption,
   getFormData,
   getFormToSubmit,
+  getNewProductsData,
   getNewTitleData,
   getTitleFormData,
-  getWebFormData
+  getWebFormData,
+   saveToLocal
 } from '../../pages/Pressupost/PressupostFunctions'
 import { FlexColumn, FlexRow } from '../../pages/Pressupost/PressupostStyled'
 
@@ -20,22 +24,12 @@ const CreatePressupost = ({ title, setTitleModal, setInfoModal, listPressupost, 
   function handleChange(event){
     const { name } = event.target
     setFormData(prevFormData => {
-      const newFormData = []
-      for (let option of prevFormData){
-        if (option.id === name) {
-          const updatedOption = {
-            ...option,
-            selected: !option.selected
-          }
-          if (updatedOption.name === 'web' && !updatedOption.selected) {
-            setTotalWebFunctions(0)
-          }
-          newFormData.push(updatedOption)
-        } else {
-          newFormData.push(option)
-        }
+      const newFormData = getNewProductsData(prevFormData, name)
+      const selectedWeb = newFormData.find(item => item.name === 'web' && !item.selected)
+      if (selectedWeb) {
+        setTotalWebFunctions(0)
       }
-      localStorage.setItem('products', JSON.stringify(newFormData))
+      saveToLocal('products', newFormData)
       return newFormData
     })
   }
@@ -43,17 +37,8 @@ const CreatePressupost = ({ title, setTitleModal, setInfoModal, listPressupost, 
   React.useEffect(() => {
     const selectedItems = formData.filter(item => item.selected)
     if (selectedItems.length > 0) {
-      const webOption = selectedItems.find(item => item.id === 'web')
-      setTotal(prevTotal => {
-        let total = 0
-        for (let option of selectedItems) {
-          total += option.price
-        }
-        if (webOption !== undefined) {
-          total += totalWebFunctions
-        }
-        return total
-      })
+      const webOption = findWebOption(selectedItems)
+      setTotal(calculateTotal(selectedItems, webOption, totalWebFunctions))
     } else {
       setTotal(0)
     }
@@ -63,7 +48,7 @@ const CreatePressupost = ({ title, setTitleModal, setInfoModal, listPressupost, 
     const { name, value } = event.target
     setTitleFormData(prevTitleFormData => {
       const newFormData = getNewTitleData(prevTitleFormData, name, value)
-      localStorage.setItem('titleFormData', JSON.stringify(newFormData))
+      saveToLocal('titleFormData', newFormData)
       return newFormData
     })
   }
@@ -72,7 +57,7 @@ const CreatePressupost = ({ title, setTitleModal, setInfoModal, listPressupost, 
     const formToSubmit = getFormToSubmit(listPressupost, titleFormData, formData, total, webFormData)
     setListPressupost(prevList => {
       const newListData = [...prevList, formToSubmit]
-      localStorage.setItem('listPressupost', JSON.stringify(newListData))
+      saveToLocal('listPressupost', newListData)
       return newListData
     })
   }

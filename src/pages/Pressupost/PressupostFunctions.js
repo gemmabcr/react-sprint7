@@ -1,31 +1,46 @@
 import { products, titlePresu, webFunctions } from '../../data'
 
+export function getFromLocal(key, parse = false) {
+  if (parse) {
+    return JSON.parse(localStorage.getItem(key))
+  }
+  return localStorage.getItem(key)
+}
+
+export function saveToLocal(name, value) {
+  localStorage.setItem(name, JSON.stringify(value))
+}
+
 export function getFormData () {
-  if (localStorage.getItem('products') === null) {
+  const key = 'products'
+  if (getFromLocal(key) === null) {
     return products
   }
-  return JSON.parse(localStorage.getItem('products'))
+  return getFromLocal(key, true)
 }
 
 export function getWebFormData () {
-  if (localStorage.getItem('webFunctions') === null) {
+  const key = 'webFunctions'
+  if (getFromLocal(key) === null) {
     return webFunctions
   }
-  return JSON.parse(localStorage.getItem('webFunctions'))
+  return getFromLocal(key, true)
 }
 
 export function getTitleFormData () {
-  if (localStorage.getItem('titleFormData') === null) {
+  const key = 'titleFormData'
+  if (getFromLocal(key) === null) {
     return titlePresu
   }
-  return JSON.parse(localStorage.getItem('titleFormData'))
+  return getFromLocal(key, true)
 }
 
 export function getListData () {
-  if (localStorage.getItem('listPressupost') === null) {
+  const key = 'listPressupost'
+  if (getFromLocal(key) === null) {
     return []
   }
-  return JSON.parse(localStorage.getItem('listPressupost'))
+  return getFromLocal(key, true)
 }
 
 export function getNewTitleData (prevState, name, value) {
@@ -44,11 +59,42 @@ export function getNewTitleData (prevState, name, value) {
   return newFormData
 }
 
+export function getNewProductsData (prevFormData, name) {
+  const newFormData = []
+  for (let option of prevFormData){
+    if (option.id === name) {
+      const updatedOption = {
+        ...option,
+        selected: !option.selected
+      }
+      newFormData.push(updatedOption)
+    } else {
+      newFormData.push(option)
+    }
+  }
+  return newFormData
+}
+
+export function findWebOption (selectedItems) {
+  return selectedItems.find(item => item.id === 'web')
+}
+
+export function calculateTotal (selectedItems, webOption, totalWebFunctions) {
+  let total = 0
+  for (let option of selectedItems) {
+    total += option.price
+  }
+  if (webOption !== undefined) {
+    total += totalWebFunctions
+  }
+  return total
+}
+
 export function getFormToSubmit (listPressupost, titleFormData, formData, total, webFormData) {
   const namePressupost = titleFormData.find(item => item.id === 'title')
   const nameClient = titleFormData.find(item => item.id === 'client')
   const selectedItems = formData.filter(item => item.selected)
-  const webOption = selectedItems.find(item => item.id === 'web')
+  const webOption = findWebOption(selectedItems)
   let webFunctionalities = []
   if (webOption !== undefined) {
     webFunctionalities = webFormData

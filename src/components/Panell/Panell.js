@@ -1,7 +1,7 @@
 import React from 'react'
 import { Panel, RowPanel, RowPanelTitle } from './PanellStyled'
-import { webFunctions } from '../../data'
 import { FlexRow } from '../../pages/Pressupost/PressupostStyled'
+import { saveToLocal } from '../../pages/Pressupost/PressupostFunctions'
 
 const Panell = ({ totalWebFunctions, setTotalWebFunctions, setTitleModal, setInfoModal, webFormData, setWebFormData }) => {
 
@@ -20,7 +20,7 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions, setTitleModal, setInf
           newFormData.push(option)
         }
       }
-      localStorage.setItem('webFunctions', JSON.stringify(newFormData))
+      saveToLocal('webFunctions', newFormData)
       return newFormData
     })
   }
@@ -40,7 +40,7 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions, setTitleModal, setInf
           newFormData.push(option)
         }
       }
-      localStorage.setItem('webFunctions', JSON.stringify(newFormData))
+      saveToLocal('webFunctions', newFormData)
       return newFormData
     })
   }

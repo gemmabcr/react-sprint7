@@ -6,6 +6,9 @@ const ListPressupost = ({ title, listPressupost }) => {
   return (
     <FlexColumn>
       <h4>{ title }</h4>
+      { listPressupost.length === 0 &&
+        <small>Todavía no hay ningún presupuesto guardado</small>
+      }
       { listPressupost.length > 0 && listPressupost.map(item =>
         <ItemList key={ item.id }>
           <p>{ item.date }</p>

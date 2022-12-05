@@ -18,4 +18,5 @@ export const FlexRow = styled.div`
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
+  margin-bottom: 1rem;
 `

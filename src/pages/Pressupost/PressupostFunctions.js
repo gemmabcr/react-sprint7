@@ -28,12 +28,46 @@ export function getListData () {
   return JSON.parse(localStorage.getItem('listPressupost'))
 }
 
-export function format(inputDate) {
-  let date, month, year;
+export function getNewTitleData (prevState, name, value) {
+  const newFormData = []
+  for (let option of prevState){
+    if (option.id === name) {
+      const updatedOption = {
+        ...option,
+        value: value
+      }
+      newFormData.push(updatedOption)
+    } else {
+      newFormData.push(option)
+    }
+  }
+  return newFormData
+}
 
-  date = inputDate.getDate();
-  month = inputDate.getMonth() + 1;
-  year = inputDate.getFullYear();
+export function getFormToSubmit (listPressupost, titleFormData, formData, total, webFormData) {
+  const namePressupost = titleFormData.find(item => item.id === 'title')
+  const nameClient = titleFormData.find(item => item.id === 'client')
+  const selectedItems = formData.filter(item => item.selected)
+  const webOption = selectedItems.find(item => item.id === 'web')
+  let webFunctionalities = []
+  if (webOption !== undefined) {
+    webFunctionalities = webFormData
+  }
+  return {
+    id: listPressupost.length,
+    title: namePressupost.value,
+    client: nameClient.value,
+    products: selectedItems,
+    webFunctions: webFunctionalities,
+    totalPrice: total,
+    date: format(new Date())
+  }
+}
+
+export function format (inputDate) {
+  let date = inputDate.getDate();
+  let month = inputDate.getMonth() + 1;
+  let year = inputDate.getFullYear();
 
   date = date
     .toString()

@@ -7,6 +7,12 @@ export function getFromLocal(key, parse = false) {
   return localStorage.getItem(key)
 }
 
+export function resetLocalData(){
+  saveToLocal('titleFormData', titlePresu)
+  saveToLocal('products', products)
+  saveToLocal('webFunctions', webFunctions)
+}
+
 export function saveToLocal(name, value) {
   localStorage.setItem(name, JSON.stringify(value))
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Panell from '../Panell/Panell'
 import {
   calculateTotal,
@@ -9,24 +9,26 @@ import {
   getNewTitleData,
   getTitleFormData,
   getWebFormData,
-   saveToLocal
+  resetLocalData,
+  saveToLocal
 } from '../../pages/Pressupost/PressupostFunctions'
 import { FlexColumn, FlexRow } from '../../pages/Pressupost/PressupostStyled'
+import { products, titlePresu, webFunctions } from '../../data'
 
 const CreatePressupost = ({ title, setTitleModal, setInfoModal, listPressupost, setListPressupost }) => {
 
-  const [titleFormData, setTitleFormData] = React.useState(() => getTitleFormData())
-  const [formData, setFormData] = React.useState(() => getFormData())
-  const [webFormData, setWebFormData] = React.useState(() => getWebFormData())
-  const [totalWebFunctions, setTotalWebFunctions] = React.useState(0)
-  const [total, setTotal] = React.useState(0)
+  const [titleFormData, setTitleFormData] = useState(() => getTitleFormData())
+  const [formData, setFormData] = useState(() => getFormData())
+  const [webFormData, setWebFormData] = useState(() => getWebFormData())
+  const [totalWebFunctions, setTotalWebFunctions] = useState(0)
+  const [total, setTotal] = useState(0)
 
   function handleChange(event){
     const { name } = event.target
     setFormData(prevFormData => {
       const newFormData = getNewProductsData(prevFormData, name)
-      const selectedWeb = newFormData.find(item => item.name === 'web' && !item.selected)
-      if (selectedWeb) {
+      const webOption = findWebOption(newFormData)
+      if (!webOption.selected) {
         setTotalWebFunctions(0)
       }
       saveToLocal('products', newFormData)
@@ -58,14 +60,22 @@ const CreatePressupost = ({ title, setTitleModal, setInfoModal, listPressupost, 
     setListPressupost(prevList => {
       const newListData = [...prevList, formToSubmit]
       saveToLocal('listPressupost', newListData)
+      resetFormData()
       return newListData
     })
+  }
+
+  function resetFormData () {
+    resetLocalData()
+    setTitleFormData(titlePresu)
+    setFormData(products)
+    setWebFormData(webFunctions)
   }
 
   return (
     <FlexColumn>
       <h4>{ title }</h4>
-      <form onSubmit={ onSubmitForm }>
+      <form>
         { titleFormData.map(item =>
           <FlexRow key={ item.id }>
             <label htmlFor={ item.id }>
@@ -107,7 +117,7 @@ const CreatePressupost = ({ title, setTitleModal, setInfoModal, listPressupost, 
           </div>
         ) }
         <p>Total: { total }€</p>
-        <button>Guardar</button>
+        <button onClick={ onSubmitForm }>Guardar</button>
       </form>
     </FlexColumn>
   )

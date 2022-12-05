@@ -1,10 +1,10 @@
 import React from 'react'
 import { ItemList } from './ListPressupostStyled'
-import { FlexColumn } from '../../pages/Pressupost/PressupostStyled'
+import { ListContainer } from '../../pages/Pressupost/PressupostStyled'
 
 const ListPressupost = ({ title, listPressupost }) => {
   return (
-    <FlexColumn>
+    <ListContainer>
       <h4>{ title }</h4>
       { listPressupost.length === 0 &&
         <small>Todavía no hay ningún presupuesto guardado</small>
@@ -34,7 +34,7 @@ const ListPressupost = ({ title, listPressupost }) => {
           <p>Precio total: { item.totalPrice }€</p>
         </ItemList>
       )}
-    </FlexColumn>
+    </ListContainer>
   )
 }
 

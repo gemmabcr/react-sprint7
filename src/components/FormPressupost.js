@@ -1,5 +1,5 @@
 import React from 'react'
-import { saveToLocal } from '../service/dataService'
+import { localData, saveToLocal } from '../service/dataService'
 import { FlexColumn, FlexRow } from '../pages/Pressupost/PressupostStyled'
 
 const FormPressupost = ({ title, formData, setFormData, onNewSubmit, total }) => {
@@ -34,7 +34,7 @@ const FormPressupost = ({ title, formData, setFormData, onNewSubmit, total }) =>
           updatedForm.push(option)
         }
       }
-      saveToLocal('formData', updatedForm)
+      saveToLocal(localData, updatedForm)
       return updatedForm
     })
     resetWeb()
@@ -56,7 +56,7 @@ const FormPressupost = ({ title, formData, setFormData, onNewSubmit, total }) =>
             updatedForm.push(option)
           }
         }
-        saveToLocal('formData', updatedForm)
+        saveToLocal(localData, updatedForm)
         return updatedForm
       })
     }

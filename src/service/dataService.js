@@ -1,5 +1,8 @@
 import { newFormData } from '../data'
 
+export const localData = 'formData'
+export const localList = 'listBudget'
+
 export function getFromLocal(key, parse = false) {
   if (parse) {
     return JSON.parse(localStorage.getItem(key))
@@ -19,11 +22,9 @@ export function gettingData (key, data) {
 }
 
 export function getNewFormData () {
-  const key = 'newFormData'
-  return gettingData(key, newFormData)
+  return gettingData(localData, newFormData)
 }
 
 export function getListData () {
-  const key = 'listPressupost'
-  return gettingData(key, [])
+  return gettingData(localList, [])
 }

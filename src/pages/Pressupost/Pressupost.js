@@ -5,7 +5,7 @@ import Modal from '../../components/Modal/Modal'
 import { calculateTotal, getSubmitData } from './PressupostFunctions'
 import FormPressupost from '../../components/FormPressupost'
 import { newFormData as importedData } from '../../data'
-import { getListData, getNewFormData, saveToLocal } from '../../service/dataService';
+import { getListData, getNewFormData, localData, localList, saveToLocal } from '../../service/dataService'
 
 const Pressupost = () => {
   const title = '¿Qué quieres hacer?'
@@ -25,14 +25,14 @@ const Pressupost = () => {
     const newListItem = getSubmitData(formData, listBudget, total)
     setListBudget(prevList => {
       const newListData = [...prevList, newListItem]
-      saveToLocal('listBudget', newListData)
+      saveToLocal(localList, newListData)
       return newListData
     })
     resetFormData()
   }
 
   function resetFormData () {
-    saveToLocal('formData', importedData)
+    saveToLocal(localData, importedData)
     setFormData(importedData)
   }
 

@@ -7,15 +7,6 @@ export const PressupostContainer = styled.div`
   height: 100vh;
 `
 
-export const ListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-  max-height: inherit;
-  overflow-y: scroll;
-`
-
 export const FlexColumn = styled.div`
   display: flex;
   flex-direction: column;

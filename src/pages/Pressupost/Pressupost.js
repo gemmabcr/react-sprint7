@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { PressupostContainer } from './PressupostStyled'
-import ListPressupost from '../../components/ListPressupost/ListPressupost'
+import ListBudget from '../../components/ListPressupost/ListBudget'
 import Modal from '../../components/Modal/Modal'
 import { findWebOption, format, getListData, getNewFormData, saveToLocal } from './PressupostFunctions'
 import FormPressupost from '../../components/FormPressupost'
@@ -84,8 +84,8 @@ const Pressupost = () => {
         openModal={ openModal }
         total={ total }
       />
-      <ListPressupost
-        listPressupost={ listPressupost }
+      <ListBudget
+        listBudget={ listPressupost }
         title={ listTitle }
       />
       <Modal

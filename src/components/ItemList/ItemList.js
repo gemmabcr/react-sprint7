@@ -1,5 +1,5 @@
 import React from 'react'
-import { ItemListContainer, ItemListHeader } from '../ListPressupost/ListPressupostStyled'
+import { ItemListContainer, ItemListHeader } from './ItemListStyled'
 
 const ItemList = ({ item }) => {
   return (

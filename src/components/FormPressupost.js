@@ -2,11 +2,11 @@ import React from 'react'
 import { saveToLocal } from '../pages/Pressupost/PressupostFunctions'
 import { FlexColumn, FlexRow } from '../pages/Pressupost/PressupostStyled'
 
-const FormPressupost = ({ title, newFormData, setNewFormData, onNewSubmit, total }) => {
+const FormPressupost = ({ title, formData, setFormData, onNewSubmit, total }) => {
 
   function handleNewChange (event) {
     const { name, value, type } = event.target
-    setNewFormData(prevState => {
+    setFormData(prevState => {
       const updatedForm = []
       for (let option of prevState){
         if (option.id === name) {
@@ -34,18 +34,41 @@ const FormPressupost = ({ title, newFormData, setNewFormData, onNewSubmit, total
           updatedForm.push(option)
         }
       }
-      saveToLocal('newFormData', updatedForm)
+      saveToLocal('formData', updatedForm)
       return updatedForm
     })
+    resetWeb()
+  }
+
+  function resetWeb() {
+    const webOption = formData.find(item => item.id === 'web')
+    if (!webOption.selected) {
+      setFormData(prevState => {
+        const updatedForm = []
+        for (let option of prevState) {
+          if (option.webConditional) {
+            let updatedOption = {
+              ...option,
+              value: 0
+            }
+            updatedForm.push(updatedOption)
+          } else {
+            updatedForm.push(option)
+          }
+        }
+        saveToLocal('formData', updatedForm)
+        return updatedForm
+      })
+    }
   }
 
   function checkWeb () {
-    const webOption = newFormData.find(item => item.id === 'web')
+    const webOption = formData.find(item => item.id === 'web')
     return !!webOption.selected
   }
 
   function disabledButton () {
-    const checkboxesOptions = newFormData.filter(item => item.selected )
+    const checkboxesOptions = formData.filter(item => item.selected )
     return checkboxesOptions.every(item => !item.selected)
   }
 
@@ -53,7 +76,7 @@ const FormPressupost = ({ title, newFormData, setNewFormData, onNewSubmit, total
     <FlexColumn>
       <h4>{ title }</h4>
       <form>
-        { newFormData.map(item =>
+        { formData.map(item =>
           <div key={ item.id }>
             { item.webConditional && checkWeb() &&
               <FlexRow key={ item.id }>

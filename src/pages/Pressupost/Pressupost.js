@@ -11,20 +11,21 @@ const Pressupost = () => {
   const listTitle = 'Listado de presupuestos'
   const [infoModal, setInfoModal] = React.useState(false)
   const [titleModal, setTitleModal] = React.useState('')
-  const [newFormData, setNewFormData] = useState(getNewFormData())
+  const [formData, setFormData] = useState(getNewFormData())
   const [listPressupost, setListPressupost] = React.useState(() => getListData())
   const [total, setTotal] = useState(0)
+
   React.useEffect(() => {
-    const selectedOptions = newFormData.filter(item => item.selected)
+    const selectedOptions = formData.filter(item => item.selected)
     setTotal(prevTotal => {
       let total = 0
       if (selectedOptions.length > 0) {
         for (let option of selectedOptions) {
           total += option.price
         }
-        const webOption = newFormData.find(item => item.id === 'web')
+        const webOption = formData.find(item => item.id === 'web')
         if (!!webOption.selected) {
-          const webFunctionalities = newFormData.filter(item => item.webConditional)
+          const webFunctionalities = formData.filter(item => item.webConditional)
           for (let functionality of webFunctionalities) {
             const totalFunctionality = functionality.value * 30
             total += totalFunctionality
@@ -33,17 +34,17 @@ const Pressupost = () => {
       }
       return total
     })
-  }, [newFormData])
+  }, [formData])
 
   function onNewSubmit () {
-    const namePressupost = newFormData.find(item => item.id === 'title')
-    const nameClient = newFormData.find(item => item.id === 'client')
-    const selectedItems = newFormData.filter(item => item.selected)
+    const namePressupost = formData.find(item => item.id === 'title')
+    const nameClient = formData.find(item => item.id === 'client')
+    const selectedItems = formData.filter(item => item.selected)
     const webOption = findWebOption(selectedItems)
     let webFunctionalities = []
     if (webOption !== undefined) {
-      const pages = newFormData.find(item => item.id === 'pages')
-      const languages = newFormData.find(item => item.id === 'languages')
+      const pages = formData.find(item => item.id === 'pages')
+      const languages = formData.find(item => item.id === 'languages')
       webFunctionalities = [pages, languages]
     }
     const newListItem = {
@@ -64,8 +65,8 @@ const Pressupost = () => {
   }
 
   function resetFormData () {
-    saveToLocal('newFormData', importedData)
-    setNewFormData(importedData)
+    saveToLocal('formData', importedData)
+    setFormData(importedData)
   }
 
   function openModal (name) {
@@ -77,8 +78,8 @@ const Pressupost = () => {
     <PressupostContainer>
       <FormPressupost
         title={ title }
-        newFormData={ newFormData }
-        setNewFormData={ setNewFormData }
+        formData={ formData }
+        setFormData={ setFormData }
         onNewSubmit={ onNewSubmit }
         openModal={ openModal }
         total={ total }

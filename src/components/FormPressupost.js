@@ -68,8 +68,17 @@ const FormPressupost = ({ title, formData, setFormData, onNewSubmit, total }) =>
   }
 
   function disabledButton () {
+    let disabled = false
     const checkboxesOptions = formData.filter(item => item.selected )
-    return checkboxesOptions.every(item => !item.selected)
+    if (checkboxesOptions.every(item => !item.selected)) {
+      disabled = true
+    }
+    const namePressupost = formData.find(item => item.id === 'title')
+    const nameClient = formData.find(item => item.id === 'client')
+    if (namePressupost.value === '' || nameClient.value === '') {
+      disabled = true
+    }
+    return disabled
   }
 
   return (

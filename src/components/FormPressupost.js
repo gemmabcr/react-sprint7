@@ -1,5 +1,5 @@
 import React from 'react'
-import { saveToLocal } from '../pages/Pressupost/PressupostFunctions'
+import { saveToLocal } from '../service/dataService'
 import { FlexColumn, FlexRow } from '../pages/Pressupost/PressupostStyled'
 
 const FormPressupost = ({ title, formData, setFormData, onNewSubmit, total }) => {

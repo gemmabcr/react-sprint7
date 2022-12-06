@@ -2,15 +2,10 @@ import React, { useState } from 'react'
 import { PressupostContainer } from './PressupostStyled'
 import ListBudget from '../../components/ListPressupost/ListBudget'
 import Modal from '../../components/Modal/Modal'
-import {
-  calculateTotal,
-  getListData,
-  getNewFormData,
-  getSubmitData,
-  saveToLocal
-} from './PressupostFunctions'
+import { calculateTotal, getSubmitData } from './PressupostFunctions'
 import FormPressupost from '../../components/FormPressupost'
 import { newFormData as importedData } from '../../data'
+import { getListData, getNewFormData, saveToLocal } from '../../service/dataService';
 
 const Pressupost = () => {
   const title = '¿Qué quieres hacer?'
@@ -18,7 +13,7 @@ const Pressupost = () => {
   const [infoModal, setInfoModal] = React.useState(false)
   const [titleModal, setTitleModal] = React.useState('')
   const [formData, setFormData] = useState(getNewFormData())
-  const [listPressupost, setListPressupost] = React.useState(() => getListData())
+  const [listBudget, setListBudget] = React.useState(() => getListData())
   const [total, setTotal] = useState(0)
 
   React.useEffect(() => {
@@ -27,10 +22,10 @@ const Pressupost = () => {
   }, [formData])
 
   function onNewSubmit () {
-    const newListItem = getSubmitData(formData, listPressupost, total)
-    setListPressupost(prevList => {
+    const newListItem = getSubmitData(formData, listBudget, total)
+    setListBudget(prevList => {
       const newListData = [...prevList, newListItem]
-      saveToLocal('listPressupost', newListData)
+      saveToLocal('listBudget', newListData)
       return newListData
     })
     resetFormData()
@@ -57,7 +52,7 @@ const Pressupost = () => {
         total={ total }
       />
       <ListBudget
-        listBudget={ listPressupost }
+        listBudget={ listBudget }
         title={ listTitle }
       />
       <Modal

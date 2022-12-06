@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { ContentModal, Overlay, WrapperModal } from './ModalStyled'
 
-const Modal = ({ show, setShow, text, titleModal }) => {
+const Modal = ({ show, setShow, titleModal }) => {
   return (
     <Fragment>
       {show &&

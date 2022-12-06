@@ -1,7 +1,6 @@
 import React from 'react'
 import {ItemList, ItemListHeader} from './ListPressupostStyled'
 import { ListContainer } from '../../pages/Pressupost/PressupostStyled'
-import { checkWebFunctions, getWebFunctionData } from './ListPressupostFunctions'
 
 const ListPressupost = ({ title, listPressupost }) => {
   return (
@@ -22,14 +21,12 @@ const ListPressupost = ({ title, listPressupost }) => {
               <ul>
                 { item.products.map(product =>
                   <div key={product.name}>
-                    <li>{ product.name }: { product.price }€</li>
-                    { checkWebFunctions(product, item) &&
-                      <ul>
-                        { item.webFunctions.map(webFunction =>
-                          getWebFunctionData(webFunction)
-                        ) }
-                      </ul>
-                    }
+                    <li>{ product.name } <small>({ product.price }€)</small></li>
+                  </div>
+                ) }
+                { item.webFunctions.map(product =>
+                  <div key={product.name}>
+                    <li>{ product.name }: { product.value } <small>({ product.value * 30 }€)</small></li>
                   </div>
                 ) }
               </ul>

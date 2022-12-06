@@ -1,9 +1,8 @@
 import React from 'react'
-import { Panel, RowPanel, RowPanelTitle } from './PanellStyled'
 import { FlexRow } from '../../pages/Pressupost/PressupostStyled'
 import { saveToLocal } from '../../pages/Pressupost/PressupostFunctions'
 
-const Panell = ({ totalWebFunctions, setTotalWebFunctions, setTitleModal, setInfoModal, webFormData, setWebFormData }) => {
+const Panell = ({ setTitleModal, setInfoModal, webFormData, setWebFormData }) => {
 
   function symbolButton(name, symbol) {
     setWebFormData(prevFormData => {
@@ -25,47 +24,15 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions, setTitleModal, setInf
     })
   }
 
-  function handleChange(event) {
-    const {name, value} = event.target
-    setWebFormData(prevFormData => {
-      const newFormData = []
-      for (let option of prevFormData) {
-        if (option.id === name) {
-          const updatedOption = {
-            ...option,
-            number: Number(value)
-          }
-          newFormData.push(updatedOption)
-        } else {
-          newFormData.push(option)
-        }
-      }
-      saveToLocal('webFunctions', newFormData)
-      return newFormData
-    })
-  }
-
   function openModal (name) {
     setTitleModal(name)
     setInfoModal(true)
   }
 
-  React.useEffect(() => {
-    const selectedInputs = webFormData.filter(item => item.number > 0)
-    const numbersArray = selectedInputs.map(number => number.number)
-    const total = numbersArray.reduce((partialSum, a) => partialSum + a, 0)
-    setTotalWebFunctions(total * 30)
-  }, [webFormData, setTotalWebFunctions])
-
   return (
-    <Panel>
+    <div>
       {webFormData.map(item =>
-        <RowPanel key={item.id}>
-          <RowPanelTitle>
-            <label htmlFor={item.id}>
-              {item.name} (*30€)
-            </label>
-          </RowPanelTitle>
+        <div key={item.id}>
           <FlexRow>
             <button
               disabled={item.number === 0}
@@ -73,14 +40,6 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions, setTitleModal, setInf
             >
               -
             </button>
-            <input
-              type='number'
-              id={item.id}
-              name={item.id}
-              min={0}
-              value={item.number}
-              onChange={handleChange}
-            />
             <button
               onClick={() => symbolButton(item.id, '+')}
             >
@@ -92,10 +51,9 @@ const Panell = ({ totalWebFunctions, setTotalWebFunctions, setTitleModal, setInf
               Info
             </button>
           </FlexRow>
-        </RowPanel>
+        </div>
       )}
-      <p>Total funcionalidades: {totalWebFunctions}€</p>
-    </Panel>
+    </div>
   )
 }
 

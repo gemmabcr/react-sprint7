@@ -1,40 +1,14 @@
 import React from 'react'
 import { localData, saveToLocal } from '../../service/dataService'
 import { FlexColumn, FlexRow } from '../../pages/Pressupost/PressupostStyled'
-import { disabledButton, webFunctionsConditions } from './FormBudgetFunctions'
+import { disabledButton, getFormInputChange, getResetFormWeb, webFunctionsConditions } from './FormBudgetFunctions'
 
 const FormBudget = ({ title, formData, setFormData, onNewSubmit, total }) => {
 
   function handleNewChange (event) {
-    const { name, value, type } = event.target
+    const { name, type, value } = event.target
     setFormData(prevState => {
-      const updatedForm = []
-      for (let option of prevState){
-        if (option.id === name) {
-          let updatedOption
-          if (type === 'text') {
-            updatedOption = {
-              ...option,
-              value: value
-            }
-          }
-          if (type === 'checkbox') {
-            updatedOption = {
-              ...option,
-              selected: !option.selected
-            }
-          }
-          if (type === 'number') {
-            updatedOption = {
-              ...option,
-              value: Number(value)
-            }
-          }
-          updatedForm.push(updatedOption)
-        } else {
-          updatedForm.push(option)
-        }
-      }
+      const updatedForm = getFormInputChange(prevState, name, type, value)
       saveToLocal(localData, updatedForm)
       return updatedForm
     })
@@ -45,18 +19,7 @@ const FormBudget = ({ title, formData, setFormData, onNewSubmit, total }) => {
     const webOption = formData.find(item => item.id === 'web')
     if (!webOption.selected) {
       setFormData(prevState => {
-        const updatedForm = []
-        for (let option of prevState) {
-          if (option.webConditional) {
-            let updatedOption = {
-              ...option,
-              value: 0
-            }
-            updatedForm.push(updatedOption)
-          } else {
-            updatedForm.push(option)
-          }
-        }
+        const updatedForm = getResetFormWeb(prevState)
         saveToLocal(localData, updatedForm)
         return updatedForm
       })

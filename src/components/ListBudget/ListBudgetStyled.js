@@ -8,3 +8,10 @@ export const ListContainer = styled.div`
   max-height: inherit;
   overflow-y: scroll;
 `
+export const FiltersHeader = styled.div `
+  align-items: baseline;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 0.5rem;
+`

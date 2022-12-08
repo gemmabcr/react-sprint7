@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { PressupostContainer } from './PressupostStyled'
-import ListBudget from '../../components/ListPressupost/ListBudget'
+import ListBudget from '../../components/ListBudget/ListBudget'
 import Modal from '../../components/Modal/Modal'
 import { calculateTotal, getSubmitData } from './PressupostFunctions'
 import FormPressupost from '../../components/FormPressupost'

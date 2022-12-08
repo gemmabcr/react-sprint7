@@ -6,7 +6,7 @@ const ItemList = ({ item }) => {
     <ItemListContainer>
       <ItemListHeader>
         <p>{ item.title }, de { item.client }</p>
-        <small>{ item.date }</small>
+        <small>{ item.formattedDate }</small>
       </ItemListHeader>
       { item.products.length > 0 &&
         <div>

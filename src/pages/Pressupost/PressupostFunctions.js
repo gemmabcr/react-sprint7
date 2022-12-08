@@ -54,6 +54,7 @@ export function getSubmitData (data, list, total) {
     products: selectedItems,
     webFunctions: webFunctionalities,
     totalPrice: total,
-    date: format(new Date())
+    date: new Date(),
+    formattedDate: format(new Date()),
   }
 }

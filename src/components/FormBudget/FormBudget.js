@@ -1,8 +1,9 @@
 import React from 'react'
-import { localData, saveToLocal } from '../service/dataService'
-import { FlexColumn, FlexRow } from '../pages/Pressupost/PressupostStyled'
+import { localData, saveToLocal } from '../../service/dataService'
+import { FlexColumn, FlexRow } from '../../pages/Pressupost/PressupostStyled'
+import { disabledButton, webFunctionsConditions } from './FormBudgetFunctions'
 
-const FormPressupost = ({ title, formData, setFormData, onNewSubmit, total }) => {
+const FormBudget = ({ title, formData, setFormData, onNewSubmit, total }) => {
 
   function handleNewChange (event) {
     const { name, value, type } = event.target
@@ -62,32 +63,13 @@ const FormPressupost = ({ title, formData, setFormData, onNewSubmit, total }) =>
     }
   }
 
-  function checkWeb () {
-    const webOption = formData.find(item => item.id === 'web')
-    return !!webOption.selected
-  }
-
-  function disabledButton () {
-    let disabled = false
-    const checkboxesOptions = formData.filter(item => item.selected )
-    if (checkboxesOptions.every(item => !item.selected)) {
-      disabled = true
-    }
-    const namePressupost = formData.find(item => item.id === 'title')
-    const nameClient = formData.find(item => item.id === 'client')
-    if (namePressupost.value === '' || nameClient.value === '') {
-      disabled = true
-    }
-    return disabled
-  }
-
   return (
     <FlexColumn>
       <h4>{ title }</h4>
       <form>
         { formData.map(item =>
           <div key={ item.id }>
-            { item.webConditional && checkWeb() &&
+            { webFunctionsConditions(item, formData) &&
               <FlexRow key={ item.id }>
                 <label htmlFor={ item.id }>
                   - { item.name } <small>(*30€)</small>
@@ -121,7 +103,7 @@ const FormPressupost = ({ title, formData, setFormData, onNewSubmit, total }) =>
         ) }
         <p>Total: { total }€</p>
         <button
-          disabled={ disabledButton() }
+          disabled={ disabledButton(formData) }
           onClick={ () => onNewSubmit() }
         >
           Guardar
@@ -131,4 +113,4 @@ const FormPressupost = ({ title, formData, setFormData, onNewSubmit, total }) =>
   )
 }
 
-export default FormPressupost
+export default FormBudget

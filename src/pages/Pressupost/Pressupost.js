@@ -3,7 +3,7 @@ import { PressupostContainer } from './PressupostStyled'
 import ListBudget from '../../components/ListBudget/ListBudget'
 import Modal from '../../components/Modal/Modal'
 import { calculateTotal, getSubmitData } from './PressupostFunctions'
-import FormPressupost from '../../components/FormPressupost'
+import FormBudget from '../../components/FormBudget/FormBudget'
 import { newFormData as importedData } from '../../data'
 import { getListData, getNewFormData, localData, localList, saveToLocal } from '../../service/dataService'
 
@@ -43,7 +43,7 @@ const Pressupost = () => {
 
   return (
     <PressupostContainer>
-      <FormPressupost
+      <FormBudget
         title={ title }
         formData={ formData }
         setFormData={ setFormData }
